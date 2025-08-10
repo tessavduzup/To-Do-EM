@@ -3,58 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    function index() {
-        return view('index');
-    }
-
-    function getAllTasks() {
+    function index()
+    {
         $tasks = Task::all();
-        return json_decode($tasks);
+        return view('task.index', compact('tasks'));
     }
 
-    function getTask($id) {
-        $task = Task::where('id', $id)->first();
-        return json_decode($task);
+    function create()
+    {
+        return view('task.create');
     }
 
-    function addTask(Request $request) {
-        $data = $request->validate([
-           'title' => 'required|string',
-           'description' => 'nullable|string',
-           'status' => 'sometimes'
+    function store()
+    {
+        $data = request()->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string'
         ],
-        [
-            'title.required' => 'Введите название',
-        ]);
-
+            [
+                'title.required' => 'Введите название',
+            ]);
         Task::create($data);
-
-        return redirect('/tasks');
+        return redirect()->route('task.index');
     }
 
-    function updateTask(Request $request, $id) {
-        $data = $request->validate([
+    function show(Task $task)
+    {
+        return view('task.show', compact('task'));
+    }
+
+    function edit(Task $task)
+    {
+        return view('task.edit', compact('task'));
+    }
+
+    function update(Task $task)
+    {
+        $data = request()->validate([
             'title' => 'sometimes|string',
             'description' => 'sometimes|string'
         ]);
 
-        $task = Task::where('id', $id)->first();
         $task->update($data);
-        return redirect('/tasks');
+        return redirect()->route('task.show', compact('task'));
     }
 
-    function deleteTask($id) {
-        $task = Task::where('id', $id)->first();
+    function destroy(Task $task)
+    {
         $task->delete();
-        return redirect('/tasks');
+        return redirect()->route('task.index');
     }
-
-//    function restoreTask($id) {
-//        $task = Task::withTrashed()->where('id', $id)->first();
-//        $task->restore();
-//    }
 }

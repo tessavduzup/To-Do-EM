@@ -8,5 +8,5 @@
 ## Запуск приложения
 
 ```shell
- php artisan serve
+php artisan serve
 ```
