@@ -53,6 +53,7 @@ class TaskController extends Controller
 
     function destroy(Task $task)
     {
+        $task->update(['status' => 'deleted']);
         $task->delete();
         return redirect()->route('task.index');
     }
