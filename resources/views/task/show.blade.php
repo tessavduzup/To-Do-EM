@@ -6,9 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    {{$task->title}}
+    <h3>{{$task->title}}</h3>
     <br>
-    {{$task->description}}
+    <h3>Описание: {{$task->description}}</h3>
+
     <br>
     <a href="{{ route('task.edit', $task) }}">Редактировать</a>
     <br>

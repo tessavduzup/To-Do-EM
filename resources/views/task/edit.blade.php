@@ -10,9 +10,15 @@
     @csrf
     @method('put')
     <div>
-        <input type="text" name="title" placeholder="Название задачи" value="{{$task->title}}">
+        <input type="text" name="title" placeholder="Название задачи" value="{{old('title', $task->title)}}">
+        @error('title')
+        <div style="color:red;">{{ $message }}</div>
+        @enderror
         <br>
-        <textarea name="description" placeholder="Описание задачи">{{ $task->description }}</textarea>
+        <textarea name="description" placeholder="Описание задачи">{{old('description', $task->description)}}</textarea>
+        @error('description')
+        <div style="color:red;">{{ $message }}</div>
+        @enderror
     </div>
     <button type="submit">Обновить</button>
 </form>

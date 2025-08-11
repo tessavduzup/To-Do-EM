@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Models\Task;
 
 class TaskController extends Controller
@@ -17,15 +19,9 @@ class TaskController extends Controller
         return view('task.create');
     }
 
-    function store()
+    function store(StoreRequest $request)
     {
-        $data = request()->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string'
-        ],
-            [
-                'title.required' => 'Введите название',
-            ]);
+        $data = $request->validated();
         Task::create($data);
         return redirect()->route('task.index');
     }
@@ -40,12 +36,9 @@ class TaskController extends Controller
         return view('task.edit', compact('task'));
     }
 
-    function update(Task $task)
+    function update(UpdateRequest $request, Task $task)
     {
-        $data = request()->validate([
-            'title' => 'sometimes|string',
-            'description' => 'sometimes|string'
-        ]);
+        $data = $request->validated();
 
         $task->update($data);
         return redirect()->route('task.show', compact('task'));

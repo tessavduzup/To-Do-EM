@@ -9,9 +9,16 @@
     <form action="{{route('task.store')}}" method="post">
         @csrf
         <div>
-            <input type="text" name="title" placeholder="Название задачи">
+            <input type="text" name="title" placeholder="Название задачи" value="{{ old('title') }}">
+            @error('title')
+            <div style="color:red;">{{ $message }}</div>
+            @enderror
+
             <br>
-            <textarea name="description" placeholder="Описание задачи"></textarea>
+            <textarea name="description" placeholder="Описание задачи">{{old('description')}}</textarea>
+            @error('description')
+            <div style="color:red;">{{ $message }}</div>
+            @enderror
         </div>
         <button type="submit">Создать задачу</button>
     </form>
